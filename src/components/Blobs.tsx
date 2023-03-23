@@ -10,7 +10,7 @@ export function Blob({ className = "", ...props }) {
 export function Blobs() {
   return (
     <>
-      <div className="absolute z-10 -top32 -left-32">
+      <div className="absolute z-10 bottom-64 -left-32">
         <Blob className="bg-purple-600" />
         <Blob className="bg-yellow-600" />
         <Blob className="bg-blue-600" />

@@ -13,11 +13,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className='bg-black h-screen w-screen text-center pt-40'>
+      <div className='fixed top-0 bg-black h-screen w-screen z-10 overflow-hidden'>
+        <Blobs/>
+      </div>
+      <main className='relative text-center pt-40 z-20 md:mx-auto mx-5'>
         <h1 className='bg-gradient-to-r via-gray text-6xl font-bold text-white'>
           Summarise YouTube Video
         </h1>
-        <div className='flex flex-col justify-center w-3/5 mx-auto my-10'>
+        <div className='flex flex-col justify-center md:w-3/5 mx-auto my-10'>
           <div className="mb-5 lg:w-60 md:w-1/2 w-full">
             <LangSelector></LangSelector>
           </div>
@@ -26,7 +29,6 @@ export default function Home() {
             <Preview />
           </div>
         </div>
-        <Blobs />
       </main>
     </>
   )
