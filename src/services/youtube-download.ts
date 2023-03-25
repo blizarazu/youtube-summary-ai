@@ -51,7 +51,7 @@ export async function getYoutubeVideoLang(videoId: string) {
     const { snippet } = items.find((item: any) => item.snippet.trackKind === 'asr')
     const lang = snippet?.language ? snippet.language : items[0].language
 
-    return lang
+    return lang as string
 }
 
 export async function youtubeCaptionDownload(videoID: string, lang = 'en') {

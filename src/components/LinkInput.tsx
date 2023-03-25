@@ -10,10 +10,11 @@ export function LinkInput() {
   const streaming = useLinksStore((state) => state.streaming);
   const link = useLinksStore((state) => state.link);
   const lang = useLinksStore((state) => state.lang);
+  const type = useLinksStore((state) => state.type);
 
   async function handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
-    generateSummary(link, lang);
+    generateSummary(link, lang, type);
   }
 
   useEffect(() => {

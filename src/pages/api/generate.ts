@@ -8,19 +8,24 @@ const { OPENAI_API_KEY } = process.env
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') return res.status(405).end()
 
-    let { videoid, lang } = req.query;
+    let { videoid, lang, type } = req.query;
     videoid = videoid instanceof Array ? videoid[0] : videoid;
     lang = lang instanceof Array ? lang[0] : lang;
+    type = type instanceof Array ? type[0] : type;
 
     if (!videoid) return res.status(400).json({ error: 'Link is required' })
 
     let transcription, reader;
     try {
-        transcription = await getTranscription(videoid)
+        const ytLang = await getYoutubeVideoLang(videoid)
+        transcription = await youtubeCaptionDownload(videoid, ytLang);
+
+        if (!lang)
+            lang = ytLang
 
         if (!transcription) return res.status(400).end()
 
-        reader = await getSummary(transcription, lang)
+        reader = await getSummary(transcription, lang, type)
     } catch (e) {
         return res.status(500).json({ error: `Something went wrong: ${e}` });
     }
@@ -62,13 +67,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 }
 
-async function getTranscription(videoId: string) {
-    const lang = await getYoutubeVideoLang(videoId)
-    return youtubeCaptionDownload(videoId, lang);
-}
-
-async function getSummary(transcripition: string, lang?: string) {
-    const messages = await buildPrompt(transcripition, lang);
+async function getSummary(transcripition: string, lang?: string, type?: string) {
+    const messages = await buildPrompt(transcripition, lang, type);
     const response = await fetch(OPENAI_API_URL, {
         method: 'POST',
         headers: {

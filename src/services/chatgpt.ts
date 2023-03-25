@@ -1,18 +1,23 @@
+import { SUMMARY_TYPES } from '@/config/summary-types';
 import { LANGUAGES } from "@/config/languages";
+import { DEFAULT, PROMPTS } from '@/config/prompts';
 
-export async function buildPrompt(transcription: string, lang = "") {
+export async function buildPrompt(transcription: string, lang = '', type = SUMMARY_TYPES[0].value) {
     if (!transcription) throw new Error("Transcriptions is required")
 
     const langName = LANGUAGES.find(language => language.code === lang)
 
-    const langPrompt = langName ?
-        `Es importante que hagas el resumen en ${langName.name}.` :
-        "Es importante que hagas el resumen en el mismo idioma que el de la transcripción del vídeo."
+    const langPrompts = PROMPTS.find(p => p.lang === langName?.code)
+    const prompts = langPrompts ? langPrompts.types : DEFAULT;
+    const { prompt } = prompts.find(p => p.type === type) || {};
+
+    if (!prompt)
+        throw new Error("Invalid summary type")
 
     return [
         {
             role: 'system',
-            content: `Asume que eres una persona capaz de sintetizar el contenido de un vídeo en un resumen de entorno a 100 palabras partiendo de la transcripción de dicho vídeo, que puede estar en cualquier idioma. Sólo genera el resumen sin ninguna otra explicación. ${langPrompt}`
+            content: prompt
         },
         { role: 'user', content: transcription }
     ]

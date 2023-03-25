@@ -3,6 +3,7 @@ import { Blobs } from '@/components/Blobs'
 import { LinkInput } from '@/components/LinkInput'
 import { Preview } from '@/components/Preview'
 import { LangSelector } from '@/components/LangSelector'
+import { TypeSelector } from '@/components/TypeSelector'
 
 export default function Home() {
   return (
@@ -20,9 +21,10 @@ export default function Home() {
         <h1 className='bg-gradient-to-r via-gray text-6xl font-bold text-white'>
           Summarise YouTube Video
         </h1>
-        <div className='flex flex-col justify-center md:w-3/5 mx-auto my-10'>
-          <div className="mb-5 lg:w-60 md:w-1/2 w-full">
-            <LangSelector></LangSelector>
+        <div className='flex flex-col justify-evenly md:w-3/5 mx-auto my-10'>
+          <div className="flex flex-row justify-between gap-3 flex-wrap mb-5">
+            <LangSelector className='flex-grow' ></LangSelector>
+            <TypeSelector className='flex-grow'></TypeSelector>
           </div>
           <LinkInput></LinkInput>
           <div className='my-8'>
