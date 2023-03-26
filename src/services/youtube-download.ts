@@ -48,8 +48,8 @@ export async function getYoutubeVideoLang(videoId: string) {
     }
 
     const { items } = await response.json()
-    const { snippet } = items.find((item: any) => item.snippet.trackKind === 'asr')
-    const lang = snippet?.language ? snippet.language : items[0].language
+    const { snippet } = items.find((item: any) => item.snippet.trackKind === 'asr') || items[0]
+    const lang = snippet?.language
 
     return lang as string
 }
